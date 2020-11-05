@@ -20,6 +20,8 @@ module Bosh::Stemcell
           Azure.new
         when 'softlayer'
           Softlayer.new
+        when 'linode'
+          Linode.new
         when 'null'
           NullInfrastructure.new
         else
@@ -188,6 +190,22 @@ module Bosh::Stemcell
           default_disk_size: 25600,
           disk_formats: ['ovf'],
           stemcell_formats: ['softlayer-ovf']
+        )
+      end
+
+      def additional_cloud_properties
+        {'root_device_name' => '/dev/sda1'}
+      end
+    end
+
+    class Linode < Base
+      def initialize
+        super(
+          name: 'linode',
+          hypervisor: 'qemu',
+          default_disk_size: 25600,
+          disk_formats: ['rawdisk'],
+          stemcell_formats: []
         )
       end
 
